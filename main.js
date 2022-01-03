@@ -84,3 +84,18 @@ app.put("/api/employees/:employee_id", function (req, res) {
     res.send("Successfully! Employee updated - " + employee.name);
   });
 });
+
+// delete a employee by id
+app.delete("/api/employees/:employee_id", function (req, res) {
+  console.log(req.params.employee_id);
+  let id = req.params.employee_id;
+  Employee.remove(
+    {
+      _id: id,
+    },
+    function (err) {
+      if (err) res.send(err);
+      else res.send("Successfull! Employee has been Deleted.");
+    }
+  );
+});
