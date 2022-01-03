@@ -8,9 +8,8 @@
     "dev": "nodemon main.js"
   },
   "author": {
-    "name": "Adam",
-    "email": "jstutorials1@gmail.com",
-    "url": "http://www.js-tutorials.com/"
+    "name": "Yasir",
+    "email": "yasir.javarndcorp@gmail.com"
   },
   "license": "MIT",
   "dependencies": {

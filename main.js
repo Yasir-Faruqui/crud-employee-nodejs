@@ -2,13 +2,13 @@ var express = require("express");
 var mongoose = require("mongoose");
 var app = express();
 var database = require("./config/database");
-var bodyParser = require("body-parser"); // pull information from HTML POST (express4)
+var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
 
 var port = process.env.PORT || 3000;
-app.use(bodyParser.urlencoded({ extended: "true" })); // parse application/x-www-form-urlencoded
-app.use(bodyParser.json()); // parse application/json
-app.use(bodyParser.json({ type: "application/vnd.api+json" })); // parse application/vnd.api+json as json
+app.use(bodyParser.urlencoded({ extended: "true" }));
+app.use(bodyParser.json());
+app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 app.use(methodOverride());
 
 var Employee = require("./models/employee");
@@ -21,14 +21,14 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Connected to the database!");
+    console.log("Database connected!");
   })
   .catch((err) => {
     console.log("Cannot connect to the database!", err);
     process.exit();
   });
 
-//get all employee data from db
+//get all employees data from db
 app.get("/api/employees", function (req, res) {
   Employee.find(function (err, employees) {
     if (err) res.send(err);
@@ -36,7 +36,7 @@ app.get("/api/employees", function (req, res) {
   });
 });
 
-// create employee
+// Create employee
 app.post("/api/employees", function (req, res) {
   Employee.create(
     {
@@ -57,7 +57,7 @@ app.post("/api/employees", function (req, res) {
   );
 });
 
-// get a employee with ID of 1
+// Get  employee from id
 app.get("/api/employees/:employee_id", function (req, res) {
   let id = req.params.employee_id;
   Employee.findById(id, function (err, employee) {
@@ -65,5 +65,22 @@ app.get("/api/employees/:employee_id", function (req, res) {
 
     res.json(employee);
     console.log(employee);
+  });
+});
+
+//Update the user
+app.put("/api/employees/:employee_id", function (req, res) {
+  let id = req.params.employee_id;
+  var data = {
+    name: req.body.name,
+    salary: req.body.salary,
+    age: req.body.age,
+  };
+
+  // save the user
+  Employee.findByIdAndUpdate(id, data, function (err, employee) {
+    if (err) throw err;
+
+    res.send("Successfully! Employee updated - " + employee.name);
   });
 });
